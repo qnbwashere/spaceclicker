@@ -1,0 +1,615 @@
+:root {
+  --mineral-color: rgb(0, 157, 255);
+  --credit-color: rgb(255, 166, 0);
+  --stardust-color: rgb(255, 0, 255);
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  user-select: none;
+}
+
+#game {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  position: relative;
+}
+
+#background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, white, rgba(0,0,0,0));
+  background-repeat: repeat;
+  animation: rotate 240s linear infinite;
+}
+
+@keyframes rotate {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
+}
+
+#stats {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 24px;
+  text-shadow: 0 0 5px black;
+}
+
+#minerals { color: var(--mineral-color); }
+#credits { color: var(--credit-color); }
+#stardust { color: var(--stardust-color); }
+
+#asteroid-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+#asteroid {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, 
+    #ccc,
+    #999 20%,
+    #888 40%,
+    #666 60%,
+    #444 80%);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: inset -10px -10px 50px rgba(0,0,0,0.5),
+              inset 10px 10px 50px rgba(255,255,255,0.5);
+}
+
+#asteroid:active {
+  transform: scale(0.98);
+}
+
+#cracks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.crack {
+  position: absolute;
+  background: var(--mineral-color);
+  height: 2px;
+  opacity: 0.5;
+  transform-origin: left center;
+  animation: glow 1s infinite alternate;
+}
+
+.crater {
+  position: absolute;
+  background: radial-gradient(circle at center, 
+    rgba(0,0,0,0.3),
+    rgba(0,0,0,0.1) 60%,
+    transparent);
+  border-radius: 50%;
+}
+
+@keyframes glow {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.5); }
+}
+
+#spaceship {
+  position: absolute;
+  right: 20%;
+  top: 40%;
+  width: 100px;
+  height: 60px;
+  animation: hover 2s infinite ease-in-out;
+}
+
+@keyframes hover {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+#upgrades {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 300px;
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.upgrade-item {
+  position: relative;
+  overflow: hidden;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.upgrade-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+
+.upgrade-item:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.upgrade-item:hover::after {
+  transform: translateX(100%);
+}
+
+.upgrade-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#achievements {
+  position: fixed;
+  width: 300px;
+  right: -320px; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  transition: right 0.3s ease;
+}
+
+#achievements.visible {
+  right: 0;
+}
+
+#achievements-toggle {
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  transform-origin: right center;
+}
+
+.achievement {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.achievement.locked {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.7;
+}
+
+.achievement.unlocked {
+  background: rgba(0, 255, 0, 0.2);
+  border: 1px solid #0f0;
+}
+
+.achievement-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid #0f0;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  z-index: 1000;
+  animation: slideIn 0.5s ease-out;
+}
+
+.achievement-notification.fade-out {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translate(-50%, -100%); }
+  to { transform: translate(-50%, 0); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+
+#prestige-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(45deg, purple, magenta);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+#prestige-btn:hover {
+  transform: scale(1.1);
+}
+
+.click-effect {
+  position: absolute;
+  pointer-events: none;
+  animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(2); }
+}
+
+.cost {
+  color: #0f0;
+  font-weight: bold;
+}
+
+#minerals-per-second {
+  color: var(--mineral-color);
+  font-size: 18px;
+  opacity: 0.8;
+  margin-left: 20px;
+  font-style: italic;
+}
+
+#stardust-info {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  background: rgba(255, 0, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--stardust-color);
+  color: white;
+  max-width: 300px;
+}
+
+#stardust-info h3 {
+  color: var(--stardust-color);
+  margin-top: 0;
+}
+
+#stardust-info ul {
+  padding-left: 20px;
+}
+
+#stardust-info li {
+  margin: 5px 0;
+}
+
+#stardust-info .progress {
+  margin-top: 15px;
+  font-weight: bold;
+  color: var(--stardust-color);
+}
+
+#credits-per-second {
+  color: var(--credit-color);
+  font-size: 18px;
+  opacity: 0.8;
+  margin-left: 20px;
+  font-style: italic;
+}
+
+#achievements-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 100;
+  display: none;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#achievements-page.visible {
+  display: block;
+}
+
+#achievements-page h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#achievements-page .achievement {
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#close-achievements {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#show-achievements {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#asteroid {
+  background: radial-gradient(circle at 30% 30%, 
+    #ccc,
+    #999 20%,
+    #888 40%,
+    #666 60%,
+    #444 80%);
+  box-shadow: inset -10px -10px 50px rgba(0,0,0,0.5),
+              inset 10px 10px 50px rgba(255,255,255,0.5);
+}
+
+#dev-tools {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+}
+
+#auto-click-status {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+#start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(45deg, #000428, #004e92);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+#space-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+.floating-object {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: float 60s linear infinite;
+}
+
+.asteroid {
+  background: radial-gradient(circle, #888, #444);
+}
+
+.planet {
+  background: radial-gradient(circle, #4466ff, #224488);
+}
+
+.spaceship {
+  background: linear-gradient(135deg, #cccccc, #666666);
+}
+
+.text {
+  background: transparent;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+@keyframes float {
+  0% { 
+    transform: translate(0, 0) rotate(0deg); 
+  }
+  50% { 
+    transform: translate(100px, 200px) rotate(180deg); 
+  }
+  100% { 
+    transform: translate(-100px, -200px) rotate(360deg); 
+  }
+}
+
+.login-container {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  color: white;
+}
+
+.login-options button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#login-form input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+}
+
+#settings {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+#settings-panel {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  display: none;
+  color: white;
+  width: 250px;
+}
+
+#settings-panel.visible {
+  display: block;
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.setting label {
+  margin-right: 10px;
+}
+
+#reset-progress {
+  width: 100%;
+  margin-top: 15px;
+  background-color: rgba(255, 0, 0, 0.3);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#settings-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+#dev-portal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  max-width: 600px;
+  width: 90%;
+}
+
+.dev-section {
+  margin-bottom: 20px;
+  border: 1px solid #333;
+  padding: 10px;
+}
+
+.dev-section button {
+  margin: 5px;
+  padding: 5px 10px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#stardust-upgrade-panel {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 0, 255, 0.1);
+  border: 1px solid var(--stardust-color);
+  padding: 20px;
+  border-radius: 10px;
+}

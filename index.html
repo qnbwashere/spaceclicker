@@ -1,0 +1,105 @@
+<html>
+<head>
+  <title>Space Mining Clicker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="start-screen">
+    <div id="space-background"></div>
+    <div class="login-container">
+      <h1>Space Mining Clicker</h1>
+      <div class="login-options">
+        <button id="login-btn">Login</button>
+        <button id="register-btn">Register</button>
+        <button id="guest-btn">Play as Guest</button>
+      </div>
+      <div id="login-form" style="display:none;">
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="submit-login">Submit</button>
+      </div>
+      <div id="register-form" style="display:none;">
+        <h2>Register</h2>
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="password" id="register-password" placeholder="Password">
+        <input type="password" id="register-confirm-password" placeholder="Confirm Password">
+        <button id="submit-register">Register</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game" style="display:none;">
+    <div id="background"></div>
+    
+    <div id="stats">
+      <div id="minerals">Minerals: <span>0</span></div>
+      <div id="minerals-per-second">0.0 per second</div>
+      <div id="credits">Credits: <span>0</span></div>
+      <div id="credits-per-second">0.0 per second</div>
+      <div id="stardust">Stardust: <span>0</span></div>
+    </div>
+
+    <div id="asteroid-container">
+      <div id="asteroid"></div>
+      <div id="cracks"></div>
+      <div id="click-effects"></div>
+    </div>
+
+    <div id="upgrades">
+      <h2>Upgrades</h2>
+      <div id="upgrade-list"></div>
+    </div>
+
+    <div id="achievements">
+      <button id="achievements-toggle">Achievements</button>
+      <h2>Achievements</h2>
+      <div id="achievement-list"></div>
+    </div>
+
+    <div id="settings">
+      <button id="settings-toggle">⚙️ Settings</button>
+      <div id="settings-panel">
+        <h2>Game Settings</h2>
+        <div class="setting">
+          <label>Sound Effects</label>
+          <input type="checkbox" id="sound-toggle">
+        </div>
+        <div class="setting">
+          <label>Particle Effects</label>
+          <input type="checkbox" id="particle-toggle" checked>
+        </div>
+        <div class="setting">
+          <label>Auto-Save Frequency</label>
+          <select id="save-frequency">
+            <option value="30000">30 Seconds</option>
+            <option value="60000">1 Minute</option>
+            <option value="300000">5 Minutes</option>
+          </select>
+        </div>
+        <div class="setting">
+          <label>Theme</label>
+          <select id="theme-select">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="cyberpunk">Cyberpunk</option>
+          </select>
+        </div>
+        <button id="reset-progress">Reset Progress</button>
+      </div>
+    </div>
+
+    <button id="prestige-btn" style="display:none">Prestige!</button>
+    <button id="show-achievements">Show All Achievements</button>
+  </div>
+
+  <div id="achievements-page">
+    <button id="close-achievements">×</button>
+    <h1>Achievements</h1>
+    <div id="achievement-list"></div>
+  </div>
+
+  <script type="module" src="start-screen.js"></script>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
