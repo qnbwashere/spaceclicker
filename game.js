@@ -188,31 +188,7 @@ class Game {
     }
   }
 
-  setupDevTools() {
-    const devTools = document.createElement('div');
-    devTools.id = 'dev-tools';
-    devTools.innerHTML = `
-      <div>Dev Tools</div>
-      <button id="toggle-auto-click">Toggle Auto-Click</button>
-      <div id="auto-click-status">Auto-Click: Off</div>
-    `;
-    document.body.appendChild(devTools);
-
-    document.getElementById('toggle-auto-click').addEventListener('click', () => {
-      this.toggleAutoClick();
-    });
-
-    // Setup mouse hold detection
-    let mouseHoldInterval;
-    const asteroid = document.getElementById('asteroid');
-    
-    asteroid.addEventListener('mousedown', (e) => {
-      if (e.button === 0) { // Left click only
-        mouseHoldInterval = setInterval(() => {
-          this.clickAsteroid();
-        }, 50); // Click every 50ms while held
-      }
-    });
+ 
 
     window.addEventListener('mouseup', () => {
       if (mouseHoldInterval) {
