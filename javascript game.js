@@ -202,20 +202,7 @@ class Game {
     }
   }
 
-  setupDevTools() {
-    const devTools = document.createElement('div');
-    devTools.id = 'dev-tools';
-    devTools.innerHTML = `
-      <div>Dev Tools</div>
-      <button id="toggle-auto-click">Toggle Auto-Click</button>
-      <div id="auto-click-status">Auto-Click: Off</div>
-    `;
-    document.body.appendChild(devTools);
 
-    document.getElementById('toggle-auto-click').addEventListener('click', () => {
-      this.toggleAutoClick();
-    });
-  }
 
   setupStardustInfo() {
     const info = document.createElement('div');
