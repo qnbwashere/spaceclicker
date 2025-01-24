@@ -2,12 +2,11 @@ import { Upgrades } from './upgrades.js';
 import { Achievements } from './achievements.js';
 import { createParticles } from './particles.js';
 import { AuthManager } from './auth.js';
-import { DevPortal } from './dev-portal.js';  // New dev portal module
+
 
 class Game {
   constructor() {
     this.authManager = new AuthManager();
-    this.devPortal = new DevPortal(this);  // Initialize dev portal
     this.canClick = true;
     
     // Wait for DOM to be fully loaded before initializing
