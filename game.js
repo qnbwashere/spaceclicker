@@ -101,7 +101,6 @@ class Game {
     
     this.setupEventListeners();
     this.setupMoonCraters();
-    this.setupDevTools();
     this.setupStardustInfo();
     this.setupSettingsTab();
     this.startGameLoop();
